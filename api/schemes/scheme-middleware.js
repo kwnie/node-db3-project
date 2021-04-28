@@ -11,11 +11,11 @@ const { findById } = require("./scheme-model")
 const checkSchemeId = () => {
   return async (req, res, next) => {
     try {
-      const scheme = await findById(req.params.id)
+      const scheme = await findById(req.params.scheme_id)
 
       if(!scheme) {
         return res.status(404).json({
-          message: `scheme with scheme_id ${req.params.id} not found`
+          message: `scheme with scheme_id ${req.params.scheme_id} not found`
         })
       } else {
         req.scheme = scheme
@@ -60,7 +60,7 @@ const validateScheme = () => {
     "message": "invalid step"
   }
 */
-const validateStep = (req, res, next) => {
+const validateStep = () => {
   return (req, res, next) => {
     try {
       if(!req.body.instructions 

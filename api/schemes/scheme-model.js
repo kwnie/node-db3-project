@@ -27,37 +27,28 @@ function find() { // EXERCISE A
   */
 }
 
-function findById(schemeId) { // EXERCISE B
-  return db("schemes as sc")
-  .leftJoin("steps as st", "sc.scheme_id", "st.scheme_id")
-  .where("sc.scheme_id", schemeId)
-  .select("sc.scheme_name", "st.*")
-  .orderBy("st.step_number", "asc")
+async function findById(scheme_id) { // EXERCISE B
   
-    // dataArray.map(data => {
-    //   if(data.steps){
-    //       return {
-    //         scheme_id: data.scheme_id,
-    //         scheme_name: data.scheme_name,
-    //         steps: [
-    //           {
-    //             step_id: data.step_id,
-    //             step_number: data.step_number,
-    //             instructions: data.instructions
-    //           }
-    //         ]
-    //       }
-    //   } else {
-    //     return {
-    //       scheme_id: data.scheme_id,
-    //       scheme_name: data.scheme_name,
-    //       steps: []
-    //     }
-    //   }
-    // })   
-}
-    
-  
+  const data = await db('schemes as sc')
+    .leftJoin('steps as st', 'sc.scheme_id', 'st.scheme_id')
+    .select('sc.scheme_name', 'st.*')
+    .orderBy('st.step_number', 'asc')
+    .where('sc.scheme_id', scheme_id)
+
+    return {
+      scheme_id: data[0].scheme_id,
+      scheme_name: data[0].scheme_name,
+      steps: [
+        data.map(items => {
+          return {
+            step_id: items.step_id,
+            step_number: items.step_number,
+            instructions: items.instructions
+          }
+        })
+      ]
+    }
+} 
   /*
     1B- Study the SQL query below running it in SQLite Studio against `data/schemes.db3`:
 
